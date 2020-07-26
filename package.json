@@ -1,0 +1,21 @@
+{
+  "name": "krieg-server",
+  "version": "0.0.1",
+  "description": "Server for Krieg project, on Mistfire Forge",
+  "scripts": {
+    "start": "tsnd --respawn src/main.ts",
+    "deploy": "tsc"
+  },
+  "author": "Michael Liu",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.0.26",
+    "@types/ws": "^7.2.6",
+    "ts-node-dev": "^1.0.0-pre.56",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ws": "^7.3.1"
+  }
+}
