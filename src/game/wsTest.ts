@@ -12,4 +12,3 @@ wss.on('close', (): void => {
     console.log('Disconnected')
 })
 
-console.log('test')
