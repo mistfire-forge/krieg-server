@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 import fastify, { FastifyInstance } from 'fastify'
-import fastifyCors from 'fastify-cors'
+import * as fastifyCors from 'fastify-cors'
 
 import { registerGameHandler } from './game/game'
 import { registerSiteHandlers } from './site/site'
