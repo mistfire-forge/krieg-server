@@ -8,6 +8,7 @@ export const registerSiteHandlers = (fastify: FastifyInstance): void => {
     fastify.post('/login', async (request, reply) => {
         console.log(request.body)
 
+        reply.header('Access-Control-Allow-Origin', '*')
         return true
     })
 }
