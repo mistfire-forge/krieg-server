@@ -25,6 +25,7 @@
     "argon2": "^0.26.2",
     "dotenv": "^8.2.0",
     "fastify": "^3.1.1",
+    "fastify-cors": "^4.1.0",
     "fastify-websocket": "^2.0.7"
   }
 }
