@@ -1,8 +1,5 @@
 import { FastifyInstance } from 'fastify'
-// import fastifyWebSocket from 'fastify-websocket'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fastifyWebSocket = require('fastify-websocket')
+import * as fastifyWebSocket from 'fastify-websocket'
 
 export const registerGameHandler = (fastify: FastifyInstance): void => {
     fastify.register(fastifyWebSocket)

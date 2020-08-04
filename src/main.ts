@@ -10,7 +10,7 @@ const server: FastifyInstance = fastify({})
 registerSiteHandlers(server)
 registerGameHandler(server)
 
-server.listen(8080, (err, address) => {
+server.listen(parseInt(process.env.PORT), (err, address) => {
     if (err) {
         console.error(err)
         process.exit(1)
