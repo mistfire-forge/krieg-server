@@ -1,9 +1,11 @@
-import { FastifyInstance } from 'fastify'
+const newAccountRoute = require('./newAccounts.js')
 
-export const registerSiteHandlers = (fastify: FastifyInstance): void => {
+module.exports = fastify => {
     fastify.get('/', async (request, reply) => {
         return 'Hi from server'
     })
+
+    newAccountRoute(fastify)
 
     fastify.post('/login', async (request, reply) => {
         console.log(request.body)

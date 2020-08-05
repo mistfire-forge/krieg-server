@@ -1,10 +1,10 @@
-import { FastifyInstance } from 'fastify'
-import * as fastifyWebSocket from 'fastify-websocket'
+import fastifyWebSocket from 'fastify-websocket'
 
-export const registerGameHandler = (fastify: FastifyInstance): void => {
+module.exports = fastify => {
     fastify.register(fastifyWebSocket)
 
     fastify.get('/game', { websocket: true }, (connection, req) => {
+        console.log('Websocket Connection established')
         const socket = connection.socket
 
         socket.on('message', message => {
