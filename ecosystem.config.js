@@ -4,7 +4,7 @@ module.exports = {
     apps: [
         {
             name: `Krieg Server ${process.env.INSTANCE_NAME}`,
-            script: 'build/main.js',
+            script: 'src/main.js',
         },
     ],
 }
