@@ -1,4 +1,4 @@
-import fastifyWebSocket from 'fastify-websocket'
+const fastifyWebSocket = require('fastify-websocket')
 
 module.exports = fastify => {
     fastify.register(fastifyWebSocket)

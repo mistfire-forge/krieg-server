@@ -1,12 +1,16 @@
-const dotenv = require('dotenv')
-dotenv.config()
+require('dotenv').config()
 
 const fastify = require('fastify')
-const fastifyCors = require('fastify-cors')
-
 const server = fastify()
-server.register(fastifyCors, {
+
+server.register(require('fastify-cors'), {
     origin: '*',
+})
+server.register(require('fastify-jwt'), {
+    secret: process.env.JWT_SECRET,
+})
+server.register(require('fastify-cookie'), {
+    secret: process.env.COOKIE_SECRET,
 })
 
 const registerSite = require('./site/register.js')

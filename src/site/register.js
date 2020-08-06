@@ -1,5 +1,7 @@
-const newAccountRoute = require('./newAccounts.js')
+const registerNewAccountRoute = require('./newAccounts.js')
+const registerLoginRoute = require('./login.js')
 
 module.exports = fastify => {
-    newAccountRoute(fastify)
+    registerNewAccountRoute(fastify)
+    registerLoginRoute(fastify)
 }

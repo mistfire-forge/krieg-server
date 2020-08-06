@@ -23,7 +23,9 @@
     "dotenv": "^8.2.0",
     "eslint-plugin-node": "^11.1.0",
     "fastify": "^3.1.1",
+    "fastify-cookie": "^4.0.2",
     "fastify-cors": "^4.1.0",
+    "fastify-jwt": "^1.5.0",
     "fastify-websocket": "^2.0.7",
     "faunadb": "^2.14.2"
   }
