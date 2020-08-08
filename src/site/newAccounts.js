@@ -1,5 +1,6 @@
 const argon2 = require('argon2')
-const { client, q } = require('../DBConnector.js')
+const { client, q, getUser } = require('../DBConnector.js')
+const generateAndSetTokens = require('./setTokens.js')
 
 const usernameSchema = {
     body: {
@@ -39,14 +40,14 @@ module.exports = fastify => {
             }
         }
     )
-    fastify.post('/register', { schema: registerSchema }, registerNewAccount)
+    fastify.post('/register', { schema: registerSchema }, (req, reply) => {
+        return registerNewAccount(fastify, req, reply)
+    })
 }
 
 const checkUsernameAvailable = async username => {
     try {
-        await client.query(
-            q.Get(q.Match(q.Index('users_by_username'), username))
-        )
+        await getUser(username)
 
         return false
     } catch (err) {
@@ -60,7 +61,7 @@ const checkUsernameAvailable = async username => {
     }
 }
 
-const registerNewAccount = async (request, reply) => {
+const registerNewAccount = async (server, request, reply) => {
     const { username, password1, password2 } = request.body
 
     // First check password match
@@ -98,18 +99,14 @@ const registerNewAccount = async (request, reply) => {
                 },
             })
         )
-
-        // TODO return token
     } catch (err) {
         reply.code(500)
         return {
             complete: false,
             message: 'Could not create user',
-            other: err,
+            details: err,
         }
     }
 
-    return {
-        complete: true,
-    }
+    return generateAndSetTokens(server, reply, username)
 }

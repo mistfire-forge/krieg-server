@@ -13,7 +13,7 @@ server.register(require('fastify-cookie'), {
     secret: process.env.COOKIE_SECRET,
 })
 
-const registerSite = require('./site/register.js')
+const registerSite = require('./site/routes.js')
 
 registerSite(server)
 
