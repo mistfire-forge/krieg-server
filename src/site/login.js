@@ -1,31 +1,33 @@
 const argon2 = require('argon2')
-const { getUser } = require('../DBConnector.js')
+const { getUserByEmail } = require('../DBConnector.js')
 const generateAndSetTokens = require('./setTokens.js')
 
 const schema = {
     body: {
         type: 'object',
-        required: ['username', 'password'],
+        required: ['email', 'password'],
         properties: {
-            username: { type: 'string' },
+            email: { type: 'string' },
             password: { type: 'string' },
         },
     },
 }
 
 const badVerifyMessage = {
-    complete: false,
-    message: 'Could not verify username',
+    success: false,
+    error: {
+        message: 'Could not verify username',
+    },
 }
 
 module.exports = fastify => {
     fastify.post('/login', { schema }, async (request, reply) => {
-        const { username, password } = request.body
+        const { email, password } = request.body
 
         // TODO: Verify password
         let user
         try {
-            user = await getUser(username)
+            user = await getUserByEmail(email)
         } catch (err) {
             return badVerifyMessage
         }
@@ -43,13 +45,27 @@ module.exports = fastify => {
 
         // TODO: Log IP
 
-        return generateAndSetTokens(fastify, reply, username)
+        return {
+            success: true,
+            content: {
+                accessToken: generateAndSetTokens(fastify, reply, email),
+            },
+        }
     })
 
     fastify.get('/refresh', (request, reply) => {
         const decoded = fastify.jwt.verify(request.cookies.refresh)
 
         // TODO: Check for token blacklist
-        return generateAndSetTokens(fastify, reply, decoded.username)
+        return {
+            success: true,
+            content: {
+                accessToken: generateAndSetTokens(
+                    fastify,
+                    reply,
+                    decoded.username
+                ),
+            },
+        }
     })
 }

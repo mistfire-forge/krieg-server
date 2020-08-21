@@ -1,5 +1,5 @@
-module.exports = (server, reply, username) => {
-    const [idToken, refreshToken] = generateTokens(server, username)
+module.exports = (server, reply, email) => {
+    const [idToken, refreshToken] = generateTokens(server, email)
 
     reply.setCookie('refresh', refreshToken, {
         // domain: 'https://dev.mistfireforge.com',
@@ -7,19 +7,19 @@ module.exports = (server, reply, username) => {
         httpOnly: true,
     })
 
-    return { idToken }
+    return idToken
 }
 
-const generateTokens = (server, username) => {
+const generateTokens = (server, email) => {
     const idToken = server.jwt.sign(
-        { username },
+        { email },
         {
             expiresIn: '5m',
         }
     )
 
     const refreshToken = server.jwt.sign(
-        { username },
+        { email },
         {
             expiresIn: '90d',
         }
