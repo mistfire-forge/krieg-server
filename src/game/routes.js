@@ -8,8 +8,12 @@ module.exports = fastify => {
         const socket = connection.socket
 
         socket.on('message', message => {
-            console.log(message)
-            socket.send('Hi from server!')
+            const parsed = JSON.parse(message)
+            if (parsed.eventName !== 'heartbeat') {
+                socket.send(
+                    JSON.stringify({ eventName: 'test', data: parsed.data })
+                )
+            }
         })
 
         socket.on('close', () => {
