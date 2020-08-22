@@ -4,7 +4,7 @@ module.exports = fastify => {
     fastify.register(fastifyWebSocket)
 
     fastify.get('/game', { websocket: true }, (connection, req) => {
-        console.log('Websocket Connection established')
+        console.log(`Websocket Connection established on path ${req.url}`)
         const socket = connection.socket
 
         socket.on('message', message => {

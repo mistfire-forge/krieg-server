@@ -14,8 +14,10 @@ server.register(require('fastify-cookie'), {
 })
 
 const registerSite = require('./site/routes.js')
+const registerGame = require('./game/routes.js')
 
 registerSite(server)
+registerGame(server)
 
 server.listen(parseInt(process.env.PORT), (err, address) => {
     if (err) {
