@@ -54,7 +54,11 @@ module.exports = fastify => {
     })
 
     fastify.get('/refresh', (request, reply) => {
-        const decoded = fastify.jwt.verify(request.cookies.refresh)
+        console.log(request.cookies)
+
+        const decoded = fastify.jwt.verify(request.cookies.refreshToken)
+
+        console.log(decoded)
 
         // TODO: Check for token blacklist
         return {
@@ -63,7 +67,7 @@ module.exports = fastify => {
                 accessToken: generateAndSetTokens(
                     fastify,
                     reply,
-                    decoded.username
+                    decoded.displayName
                 ),
             },
         }

@@ -1,9 +1,9 @@
 module.exports = (server, reply, email) => {
     const [idToken, refreshToken] = generateTokens(server, email)
 
-    reply.setCookie('refresh', refreshToken, {
-        // domain: 'https://dev.mistfireforge.com',
-        path: '/refresh',
+    reply.setCookie('refreshToken', refreshToken, {
+        path:
+            process.env.INSTANCE_NAME === 'Local' ? '/refresh' : '/api/refresh',
         httpOnly: true,
     })
 
