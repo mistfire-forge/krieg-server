@@ -1,5 +1,5 @@
-module.exports = (server, reply, email) => {
-    const [idToken, refreshToken] = generateTokens(server, email)
+module.exports = (server, reply, id) => {
+    const [idToken, refreshToken] = generateTokens(server, id)
 
     reply.setCookie('refreshToken', refreshToken, {
         path:
@@ -10,16 +10,16 @@ module.exports = (server, reply, email) => {
     return idToken
 }
 
-const generateTokens = (server, email) => {
+const generateTokens = (server, id) => {
     const idToken = server.jwt.sign(
-        { email },
+        { id },
         {
-            expiresIn: '5m',
+            expiresIn: '2s',
         }
     )
 
     const refreshToken = server.jwt.sign(
-        { email },
+        { id },
         {
             expiresIn: '90d',
         }

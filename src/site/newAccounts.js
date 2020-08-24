@@ -1,16 +1,16 @@
 const argon2 = require('argon2')
-const { client, q, getUser } = require('../DBConnector.js')
+const { client, q } = require('../DBConnector.js')
 const generateAndSetTokens = require('./setTokens.js')
 
-const displayNameSchema = {
-    body: {
-        type: 'object',
-        required: ['displayName'],
-        properties: {
-            displayName: { type: 'string' },
-        },
-    },
-}
+// const displayNameSchema = {
+//     body: {
+//         type: 'object',
+//         required: ['displayName'],
+//         properties: {
+//             displayName: { type: 'string' },
+//         },
+//     },
+// }
 const registerSchema = {
     body: {
         type: 'object',
@@ -47,8 +47,9 @@ const registerNewAccount = async (server, request, reply) => {
 
     const hash = await argon2.hash(password1)
 
+    let userId
     try {
-        await client.query(
+        const result = await client.query(
             q.Create(q.Collection('users'), {
                 data: {
                     displayName,
@@ -57,6 +58,8 @@ const registerNewAccount = async (server, request, reply) => {
                 },
             })
         )
+
+        userId = result.ref.id
     } catch (err) {
         reply.code(500)
         return {
@@ -71,7 +74,7 @@ const registerNewAccount = async (server, request, reply) => {
     return {
         success: true,
         content: {
-            accessToken: generateAndSetTokens(server, reply, displayName),
+            accessToken: generateAndSetTokens(server, reply, userId),
         },
     }
 }

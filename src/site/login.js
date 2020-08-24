@@ -2,6 +2,8 @@ const argon2 = require('argon2')
 const { getUserByEmail } = require('../DBConnector.js')
 const generateAndSetTokens = require('./setTokens.js')
 
+const { NetworkErrorCode } = require('../../shared/MessageCodes.js')
+
 const schema = {
     body: {
         type: 'object',
@@ -48,27 +50,30 @@ module.exports = fastify => {
         return {
             success: true,
             content: {
-                accessToken: generateAndSetTokens(fastify, reply, email),
+                accessToken: generateAndSetTokens(fastify, reply, user.ref.id),
             },
         }
     })
 
     fastify.get('/refresh', (request, reply) => {
-        console.log(request.cookies)
-
-        const decoded = fastify.jwt.verify(request.cookies.refreshToken)
-
-        console.log(decoded)
+        let decoded
+        try {
+            decoded = fastify.jwt.verify(request.cookies.refreshToken)
+        } catch (err) {
+            return {
+                success: false,
+                error: {
+                    message: 'Could not verify token',
+                    code: NetworkErrorCode.CouldNotVerifyToken,
+                },
+            }
+        }
 
         // TODO: Check for token blacklist
         return {
             success: true,
             content: {
-                accessToken: generateAndSetTokens(
-                    fastify,
-                    reply,
-                    decoded.displayName
-                ),
+                accessToken: generateAndSetTokens(fastify, reply, decoded.id),
             },
         }
     })

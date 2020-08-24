@@ -1,15 +1,17 @@
 require('dotenv').config()
 
+const { NetworkErrorCode } = require('../shared/MessageCodes.js')
+
 const fastify = require('fastify')
 const server = fastify()
 
-if (process.env.INSTANCE_NAME === 'Local') {
-    server.register(require('fastify-cors'), {
-        origin: ['http://127.0.0.1:1234', '/krieg.mistfireforge.com'],
-        credentials: true,
-        exposedHeaders: ['set-cookie'],
-    })
-}
+server.register(require('fastify-cors'), {
+    origin: ['http://127.0.0.1:1234', '/krieg.mistfireforge.com'],
+    credentials: true,
+    exposedHeaders: ['set-cookie'],
+    sameSite: 'lax',
+})
+
 server.register(require('fastify-jwt'), {
     secret: process.env.JWT_SECRET,
 })
@@ -17,7 +19,12 @@ server.decorate('authenticate', async (request, reply) => {
     try {
         await request.jwtVerify()
     } catch (err) {
-        reply.send(err)
+        reply.send({
+            success: false,
+            error: {
+                code: NetworkErrorCode.CouldNotVerifyToken,
+            },
+        })
     }
 })
 server.register(require('fastify-cookie'), {

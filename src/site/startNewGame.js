@@ -15,6 +15,8 @@ module.exports = fastify => {
             preValidation: [fastify.authenticate],
         },
         async (request, reply) => {
+            console.log(request.user) // TODO
+
             const body = request.body
             console.log(body)
 
