@@ -1,8 +1,11 @@
+const { client, q } = require('../DBConnector.js')
+
 const schema = {
     body: {
         type: 'object',
+        required: ['gameName'],
         properties: {
-            test: { type: 'string' },
+            gameName: { type: 'string' },
         },
     },
 }
@@ -14,20 +17,39 @@ module.exports = fastify => {
             schema,
             preValidation: [fastify.authenticate],
         },
-        async (request, reply) => {
+        async request => {
             console.log(request.user) // TODO
-
             const body = request.body
-            console.log(body)
 
-            // await new Promise((resolve, reject) => {
-            //     setTimeout(() => resolve(''), 2000)
-            // })
+            let response
+            try {
+                const playerRef = q.Ref(q.Collection('users'), request.user.id)
+                response = await client.query(
+                    q.Create(q.Collection('games'), {
+                        data: {
+                            name: body.gameName,
+                            host: playerRef,
+                            complete: false,
+                            players: [playerRef],
+                        },
+                    })
+                )
+            } catch (err) {
+                return {
+                    success: false,
+                    error: {
+                        message: 'Could not create game',
+                        details: err,
+                    },
+                }
+            }
+
+            // TODO Add game to host's ongoing games list
 
             return {
                 success: true,
                 content: {
-                    test: 'ho!',
+                    gameId: response.ref.id,
                 },
             }
         }

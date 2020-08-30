@@ -15,6 +15,10 @@ server.register(require('fastify-cors'), {
 server.register(require('fastify-jwt'), {
     secret: process.env.JWT_SECRET,
 })
+server.register(require('fastify-cookie'), {
+    secret: process.env.COOKIE_SECRET,
+})
+
 server.decorate('authenticate', async (request, reply) => {
     try {
         await request.jwtVerify()
@@ -26,9 +30,6 @@ server.decorate('authenticate', async (request, reply) => {
             },
         })
     }
-})
-server.register(require('fastify-cookie'), {
-    secret: process.env.COOKIE_SECRET,
 })
 
 const registerSite = require('./site/routes.js')

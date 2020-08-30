@@ -4,7 +4,7 @@
   "description": "Server for Krieg project, on Mistfire Forge",
   "scripts": {
     "start": "nodemon src/main.js",
-    "deploy": "npm install && pm2 start"
+    "deploy": "npm install --production && pm2 start"
   },
   "engines": {
     "node": ">=12.0.0"
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "argon2": "^0.27.0",
+    "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
     "eslint-plugin-node": "^11.1.0",
     "fastify": "^3.2.1",

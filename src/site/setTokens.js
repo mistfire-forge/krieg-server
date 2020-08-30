@@ -1,20 +1,23 @@
+const { refreshPath, secureCookie } = require('./settings.js')
+
 module.exports = (server, reply, id) => {
-    const [idToken, refreshToken] = generateTokens(server, id)
+    const [sessionToken, refreshToken] = generateTokens(server, id)
 
     reply.setCookie('refreshToken', refreshToken, {
-        path:
-            process.env.INSTANCE_NAME === 'Local' ? '/refresh' : '/api/refresh',
+        path: refreshPath,
         httpOnly: true,
+        secure: secureCookie,
+        maxAge: 60 * 60 * 24 * 90, // 90 Days
     })
 
-    return idToken
+    return sessionToken
 }
 
 const generateTokens = (server, id) => {
-    const idToken = server.jwt.sign(
+    const sessionToken = server.jwt.sign(
         { id },
         {
-            expiresIn: '2s',
+            expiresIn: '10m',
         }
     )
 
@@ -25,5 +28,5 @@ const generateTokens = (server, id) => {
         }
     )
 
-    return [idToken, refreshToken]
+    return [sessionToken, refreshToken]
 }
