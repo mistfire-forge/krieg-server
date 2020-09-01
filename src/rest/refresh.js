@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-import MessageCodes from '../../shared/MessageCodes.js'
-const { NetworkErrorCode } = MessageCodes
+import { NetworkErrorCode } from '../../shared/MessageCodes.js'
 
 import GetAndSetTokens from './utils/setTokens.js'
 

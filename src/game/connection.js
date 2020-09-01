@@ -1,27 +1,35 @@
 export default class Connection {
-    missedHeartbeat
-
     constructor(ws, onDestroy) {
         this.socket = ws
         this.onDestroy = onDestroy
 
-        // TODO Setup Heartbeat
-        setTimeout(() => {
-            this.onDestroy()
-        }, 1000)
+        this.setupHeartbeat()
     }
 
     setupHeartbeat() {
-        this.missedHeatbeat = 0
-
+        // region Server Side Heartbeat
+        this.missedHeartbeat = 0
         this.heartbeatInterval = setInterval(() => {
             if (this.missedHeartbeat > 4) {
                 clearInterval(this.heartbeatInterval)
                 this.onDestroy()
                 return
             }
-            ++this.missedHeatbeat
-            ws.ping()
+            ++this.missedHeartbeat
+            this.socket.ping()
         }, 5000)
+        // endregion
+
+        // Client Side heartbeat
+        this.socket.on('message', message => {
+            const parsed = JSON.parse(message)
+            if (parsed.eventName === '--heartbeat--') {
+                this.socket.send(JSON.stringify({ eventName: '--heartbeat--' }))
+            } else {
+                this.socket.send(
+                    JSON.stringify({ eventName: 'test', data: parsed.data })
+                )
+            }
+        })
     }
 }

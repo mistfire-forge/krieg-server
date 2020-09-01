@@ -5,8 +5,7 @@ import withValidate from './utils/withValidate.js'
 
 const { checkSchema } = Validator
 
-import MessageCodes from '../../shared/MessageCodes.js'
-const { NetworkErrorCode } = MessageCodes
+import { NetworkErrorCode } from '../../shared/MessageCodes.js'
 
 import { getUserByEmail } from '../DBConnector.js'
 import GetAndSetTokens from './utils/setTokens.js'

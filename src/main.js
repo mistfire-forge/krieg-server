@@ -5,8 +5,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import expressJwt from 'express-jwt'
 
-import MessageCodes from '../shared/MessageCodes.js'
-const { NetworkErrorCode } = MessageCodes
+import { NetworkErrorCode } from '../shared/MessageCodes.js'
 
 import RegisterRestRoutes from './rest/routes.js'
 import RegisterWSRoutes from './game/routes.js'

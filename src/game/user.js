@@ -7,7 +7,6 @@ export default class User {
     }
 
     addConnection(ws) {
-        console.log('Adding Connection')
         const newCon = new Connection(ws, () => {
             this.connections.splice(this.connections.indexOf(newCon), 1)
         })
