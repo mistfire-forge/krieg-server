@@ -4,7 +4,7 @@
   "description": "Server for Krieg project, on Mistfire Forge",
   "scripts": {
     "start": "nodemon -r dotenv/config src/main.js",
-    "deploy": "npm install --production && pm2 start"
+    "deploy": "npm install --production && node boot.js"
   },
   "engines": {
     "node": ">=14.0.0"
