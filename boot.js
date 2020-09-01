@@ -4,7 +4,7 @@ import { exec } from 'child_process'
 dotenv.config()
 
 exec(
-    `pm2 restart src/main.js --name "Kreig Server ${process.env.INSTANCE_NAME}" -- -r dotenv/config`,
+    `pm2 restart src/main.js --name "Krieg Server ${process.env.INSTANCE_NAME}" -- -r dotenv/config`,
     (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`)
