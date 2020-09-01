@@ -1,0 +1,4 @@
+{
+    "script": "src/main.js",
+    "node_args": "-r dotenv/config"
+}

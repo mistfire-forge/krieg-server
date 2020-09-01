@@ -1,29 +1,40 @@
-require('dotenv').config()
+import http from 'http'
+import express from 'express'
 
-const { NetworkErrorCode } = require('../shared/MessageCodes.js')
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import expressJwt from 'express-jwt'
 
-const fastify = require('fastify')
-const server = fastify()
+import MessageCodes from '../shared/MessageCodes.js'
+const { NetworkErrorCode } = MessageCodes
 
-server.register(require('fastify-cors'), {
-    origin: ['http://127.0.0.1:1234', '/krieg.mistfireforge.com'],
-    credentials: true,
-    exposedHeaders: ['set-cookie'],
-    sameSite: 'lax',
-})
+import RegisterRestRoutes from './rest/routes.js'
+import RegisterWSRoutes from './game/routes.js'
 
-server.register(require('fastify-jwt'), {
-    secret: process.env.JWT_SECRET,
-})
-server.register(require('fastify-cookie'), {
-    secret: process.env.COOKIE_SECRET,
-})
+const app = express()
+const server = http.createServer(app)
 
-server.decorate('authenticate', async (request, reply) => {
-    try {
-        await request.jwtVerify()
-    } catch (err) {
-        reply.send({
+app.use(express.json())
+app.use(
+    cors({
+        credentials: true,
+        origin: ['http://127.0.0.1:1234', /krieg.mistfireforge\.com$/],
+        exposedHeaders: ['set-cookie'],
+    })
+)
+app.use(cookieParser(process.env.COOKIE_SECRET))
+
+// JWT Validation for routes except...
+app.use(
+    expressJwt({
+        secret: process.env.JWT_SECRET,
+        algorithms: ['HS256'],
+    }).unless({ path: ['/login', '/refresh', '/create-account'] })
+)
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        console.log(req.headers.Authorization)
+        return res.json({
             success: false,
             error: {
                 code: NetworkErrorCode.CouldNotVerifyToken,
@@ -32,17 +43,9 @@ server.decorate('authenticate', async (request, reply) => {
     }
 })
 
-const registerSite = require('./site/routes.js')
-const registerGame = require('./game/routes.js')
+RegisterRestRoutes(app, server)
+RegisterWSRoutes(app, server)
 
-registerSite(server)
-registerGame(server)
-
-server.listen(parseInt(process.env.PORT), (err, address) => {
-    if (err) {
-        console.error(err)
-        throw new Error('Server could not start')
-    }
-
-    console.log(`Server listening at ${address}`)
+server.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`)
 })

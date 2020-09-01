@@ -1,10 +1,8 @@
-const faunadb = require('faunadb')
-const q = faunadb.query
+import fauna from 'faunadb'
 
-const client = new faunadb.Client({ secret: process.env.FAUNA_KEY })
+export const client = new fauna.Client({ secret: process.env.FAUNA_KEY })
+export const q = fauna.query
 
-const getUserByEmail = async email => {
+export const getUserByEmail = async email => {
     return await client.query(q.Get(q.Match(q.Index('users_by_email'), email)))
 }
-
-module.exports = { client, q, getUserByEmail }
