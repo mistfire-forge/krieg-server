@@ -8,7 +8,7 @@ import expressJwt from 'express-jwt'
 import { NetworkErrorCode } from '../shared/MessageCodes.js'
 
 import RegisterRestRoutes from './rest/routes.js'
-import RegisterWSRoutes from './game/routes.js'
+import RegisterWSRoutes from './game/routes/routes.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -32,7 +32,7 @@ app.use(
 )
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-        console.log(req.headers.Authorization)
+        console.log('No Auth', req.url)
         return res.json({
             success: false,
             error: {

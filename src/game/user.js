@@ -1,15 +1,13 @@
-import Connection from './connection.js'
-
 export default class User {
-    constructor(ws) {
-        this.connections = []
-        this.addConnection(ws)
+    constructor(data) {
+        this.getClientData = this.getClientData.bind(this)
+
+        this.userId = data.ref.id
     }
 
-    addConnection(ws) {
-        const newCon = new Connection(ws, () => {
-            this.connections.splice(this.connections.indexOf(newCon), 1)
-        })
-        this.connections.push(newCon)
+    getClientData() {
+        return {
+            userId: this.userId,
+        }
     }
 }

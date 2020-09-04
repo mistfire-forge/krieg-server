@@ -22,8 +22,12 @@ export default app => {
                         data: {
                             name: req.body.gameName,
                             host: playerRef,
-                            complete: false,
+                            activeState: {
+                                inLobby: true,
+                                complete: false,
+                            },
                             players: [playerRef],
+                            maxPlayers: 0,
                         },
                     })
                 )
