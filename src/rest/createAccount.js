@@ -7,6 +7,7 @@ import argon2 from 'argon2'
 
 import { client, q } from '../DBConnector.js'
 import SetAndGetTokens from './utils/setTokens.js'
+import { sendError } from './utils/sendError.js'
 
 export default app => {
     app.post(
@@ -38,7 +39,10 @@ export default app => {
                 },
                 custom: {
                     options: (value, { req }) => {
-                        return !value.localeCompare(req.body.password1)
+                        return (
+                            typeof value === 'string' &&
+                            !value.localeCompare(req.body.password1)
+                        )
                     },
                 },
             },
@@ -55,6 +59,8 @@ export default app => {
                             displayName,
                             email,
                             passwordHash: hash,
+                            activeSessions: [],
+                            pastSessions: [],
                         },
                     })
                 )
@@ -66,12 +72,9 @@ export default app => {
                     },
                 })
             } catch (err) {
-                return res.json({
-                    success: false,
-                    error: {
-                        message: 'Could not create user',
-                        details: err,
-                    },
+                return sendError(res, {
+                    message: 'Could not create user',
+                    details: err,
                 })
             }
         })

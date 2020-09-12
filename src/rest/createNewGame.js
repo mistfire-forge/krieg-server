@@ -18,16 +18,13 @@ export default app => {
             try {
                 const playerRef = q.Ref(q.Collection('users'), req.user.userId)
                 const createResult = await client.query(
-                    q.Create(q.Collection('games'), {
+                    q.Create(q.Collection('sessions'), {
                         data: {
                             name: req.body.gameName,
                             host: playerRef,
-                            activeState: {
-                                inLobby: true,
-                                complete: false,
-                            },
+                            joinState: 'LOBBY',
                             players: [playerRef],
-                            maxPlayers: 0,
+                            maxPlayers: 4, // TODO
                         },
                     })
                 )

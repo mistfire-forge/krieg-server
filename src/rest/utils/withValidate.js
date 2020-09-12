@@ -1,3 +1,4 @@
+import util from 'util'
 import Validator from 'express-validator'
 const { validationResult } = Validator
 
