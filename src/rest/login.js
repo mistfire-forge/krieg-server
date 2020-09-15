@@ -31,7 +31,6 @@ export default app => {
             },
         }),
         withValidate(async (req, res) => {
-            console.log('Logging in')
             const { email, password } = req.body
 
             let user

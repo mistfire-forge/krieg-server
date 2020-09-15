@@ -13,14 +13,16 @@ import RegisterWSRoutes from './game/routes/routes.js'
 const app = express()
 const server = http.createServer(app)
 
+const corsOptions = {
+    credentials: true,
+    origin: ['http://127.0.0.1:1234', /krieg.mistfireforge\.com$/],
+    exposedHeaders: ['set-cookie'],
+}
+
+app.options('*', cors(corsOptions))
+app.use(cors(corsOptions))
+
 app.use(express.json())
-app.use(
-    cors({
-        credentials: true,
-        origin: ['http://127.0.0.1:1234', /krieg.mistfireforge\.com$/],
-        exposedHeaders: ['set-cookie'],
-    })
-)
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
 // JWT Validation for routes except...
