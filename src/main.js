@@ -15,7 +15,7 @@ const server = http.createServer(app)
 
 const corsOptions = {
     credentials: true,
-    origin: ['http://127.0.0.1:1234', /krieg.mistfireforge\.com$/],
+    origin: ['http://127.0.0.1:1234', /krieg\.mistfireforge\.com$/],
     exposedHeaders: ['set-cookie'],
 }
 
