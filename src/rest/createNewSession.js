@@ -7,9 +7,9 @@ import { client, q } from '../DBConnector.js'
 
 export default app => {
     app.post(
-        '/create-new-game',
+        '/create-new-session',
         checkSchema({
-            gameName: {
+            sessionName: {
                 in: 'body',
                 isString: true,
             },
@@ -20,7 +20,7 @@ export default app => {
                 const createResult = await client.query(
                     q.Create(q.Collection('sessions'), {
                         data: {
-                            name: req.body.gameName,
+                            name: req.body.sessionName,
                             host: playerRef,
                             joinState: 'LOBBY',
                             players: [playerRef],

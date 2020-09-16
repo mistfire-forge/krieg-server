@@ -1,7 +1,7 @@
 import CreateAccountRoute from './createAccount.js'
 import LoginRoute from './login.js'
 import RefreshRoute from './refresh.js'
-import CreateGame from './createNewGame.js'
+import CreateGame from './createNewSession.js'
 import MyGamesList from './myGamesList.js'
 
 export default app => {
