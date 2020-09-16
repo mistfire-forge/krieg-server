@@ -34,7 +34,6 @@ app.use(
 )
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-        console.log('No Auth', req.url)
         return res.json({
             success: false,
             error: {

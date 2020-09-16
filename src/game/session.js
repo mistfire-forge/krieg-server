@@ -1,15 +1,14 @@
-import User from './user.js'
 import Connection from './connection.js'
 
-export class Game {
-    constructor(gameData, user, shutDownGame) {
+export class Session {
+    constructor(sessionData, user, shutDownGame) {
         this.handleUserMessage = this.handleUserMessage.bind(this)
         this.connectionSevered = this.connectionSevered.bind(this)
         this.addConnection = this.addConnection.bind(this)
 
         this.shutDownGame = shutDownGame
 
-        this.gameId = gameData.ref.id
+        this.sessionId = sessionData.ref.id
 
         this.connections = []
     }
@@ -31,7 +30,7 @@ export class Game {
         console.log('Deleted Connection')
 
         if (this.connections.length < 1) {
-            this.shutDownGame(this.gameId)
+            this.shutDownGame(this.sessionId)
         }
     }
 }

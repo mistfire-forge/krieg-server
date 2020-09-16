@@ -16,7 +16,7 @@ export const registerServices = app => {
     app.post(
         '/get-join-token',
         checkSchema({
-            gameId: {
+            sessionId: {
                 in: 'body',
                 isString: true,
             },
@@ -28,7 +28,7 @@ export const registerServices = app => {
             }
             tokenCache.set(id, {
                 userId: req.user.userId,
-                gameId: req.body.gameId,
+                sessionId: req.body.sessionId,
             })
 
             return res.json({

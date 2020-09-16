@@ -31,7 +31,7 @@ export default app => {
                 return res.json({
                     success: true,
                     content: {
-                        gameId: createResult.ref.id,
+                        sessionId: createResult.ref.id,
                     },
                 })
             } catch (err) {

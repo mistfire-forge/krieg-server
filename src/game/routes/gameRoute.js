@@ -3,66 +3,62 @@ import ws from 'ws'
 const wss = new ws.Server({ noServer: true })
 
 import { client, q } from '../../DBConnector.js'
-import { registerConnection } from '../gameManager.js'
+import { registerConnection } from '../sessionManager.js'
 import { tokenCache } from './tokenServices.js'
 import { WSCode } from '../../../shared/MessageCodes.js'
 
 export const handleGame = async (request, socket, head) => {
     const incomingUrl = new url.URL(request.url, 'http://something')
-    const sessionToken = incomingUrl.searchParams.get('token')
+    const requestToken = incomingUrl.searchParams.get('token')
 
-    if (!sessionToken || sessionToken === 'null') {
+    if (!requestToken || requestToken === 'null') {
         // Bad session
         console.error('Bad Session Token')
         return socket.destroy()
     }
 
-    if (!tokenCache.has(sessionToken)) {
-        return reject(WSCode.NoSuchToken, sessionToken, socket)
+    if (!tokenCache.has(requestToken)) {
+        return reject(WSCode.NoSuchToken, requestToken, socket)
     }
 
-    const sessionData = tokenCache.get(sessionToken)
-
-    console.log(sessionData)
+    const sessionCache = tokenCache.get(requestToken)
 
     // TODO get user
     let userData
     try {
         userData = await client.query(
-            q.Get(q.Ref(q.Collection('users'), sessionData.userId))
+            q.Get(q.Ref(q.Collection('users'), sessionCache.userId))
         )
 
         if (!userData) {
-            return reject(WSCode.GenericError, sessionToken, socket)
+            return reject(WSCode.GenericError, requestToken, socket)
         }
     } catch (err) {
         console.error('Bad User Get from DB') // TODO!!!
-        return reject(WSCode.GenericError, sessionToken, socket)
+        return reject(WSCode.GenericError, requestToken, socket)
     }
 
-    let gameData
+    let sessionData
     try {
-        const gameId = sessionData.gameId
-        gameData = await client.query(
-            q.Get(q.Ref(q.Collection('games'), gameId))
+        const sessionId = sessionCache.sessionId
+        sessionData = await client.query(
+            q.Get(q.Ref(q.Collection('sessions'), sessionId))
         )
 
-        console.log(gameData)
-
-        if (!gameData) {
-            return reject(WSCode.GenericError, sessionToken, socket)
+        if (!sessionData) {
+            return reject(WSCode.GenericError, requestToken, socket)
         }
 
-        if (gameData.data.complete) {
-            return reject(WSCode.GameComplete, sessionToken, socket)
+        if (sessionData.data.complete) {
+            return reject(WSCode.GameComplete, requestToken, socket)
         }
     } catch (err) {
         console.error('Bad Game Data from DB')
-        return reject(WSCode.GenericError, sessionToken, socket)
+        return reject(WSCode.GenericError, requestToken, socket)
     }
 
     wss.handleUpgrade(request, socket, head, ws => {
-        registerConnection(ws, userData, gameData)
+        registerConnection(ws, userData, sessionData)
     })
 }
 
