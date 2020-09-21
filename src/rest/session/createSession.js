@@ -1,13 +1,13 @@
 import Validator from 'express-validator'
-import withValidate from './utils/withValidate.js'
+import withValidate from '../utils/withValidate.js'
+
+import { client, q } from '../../DBConnector.js'
 
 const { checkSchema } = Validator
 
-import { client, q } from '../DBConnector.js'
-
 export default app => {
     app.post(
-        '/create-new-session',
+        '/create-session',
         checkSchema({
             sessionName: {
                 in: 'body',
@@ -38,7 +38,7 @@ export default app => {
                 return res.json({
                     success: false,
                     error: {
-                        message: 'Could not create game',
+                        message: 'Could not create session',
                         details: err,
                     },
                 })

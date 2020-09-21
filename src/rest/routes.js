@@ -1,13 +1,21 @@
-import CreateAccountRoute from './createAccount.js'
-import LoginRoute from './login.js'
-import RefreshRoute from './refresh.js'
-import CreateGame from './createNewSession.js'
-import MyGamesList from './myGamesList.js'
+import CreateAccountRoute from './account/createAccount.js'
+import LoginRoute from './account/login.js'
+import RefreshRoute from './account/refresh.js'
+
+import CreateSessionRoute from './session/createSession.js'
+import MySessionsListRoute from './session/mySessionsList.js'
+
+import CreateMapRoute from './map/createMap.js'
+import MyMapsListRoute from './map/myMapsList.js'
 
 export default app => {
     CreateAccountRoute(app)
     LoginRoute(app)
     RefreshRoute(app)
-    CreateGame(app)
-    MyGamesList(app)
+
+    CreateSessionRoute(app)
+    MySessionsListRoute(app)
+
+    CreateMapRoute(app)
+    MyMapsListRoute(app)
 }

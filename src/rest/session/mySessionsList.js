@@ -1,4 +1,4 @@
-import { client, q } from '../DBConnector.js'
+import { client, q } from '../../DBConnector.js'
 
 export default app => {
     app.get('/my-games-list', async (req, res) => {

@@ -1,14 +1,14 @@
 import argon2 from 'argon2'
 
 import Validator from 'express-validator'
-import withValidate from './utils/withValidate.js'
+import withValidate from '../utils/withValidate.js'
 
 const { checkSchema } = Validator
 
-import { NetworkErrorCode } from '../../shared/MessageCodes.js'
+import { NetworkErrorCode } from '../../../shared/MessageCodes.js'
 
-import { getUserByEmail } from '../DBConnector.js'
-import GetAndSetTokens from './utils/setTokens.js'
+import { getUserByEmail } from '../../DBConnector.js'
+import GetAndSetTokens from '../utils/setTokens.js'
 
 const badVerifyMessage = {
     success: false,

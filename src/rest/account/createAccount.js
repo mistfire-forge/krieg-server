@@ -1,13 +1,13 @@
 import Validator from 'express-validator'
-import withValidate from './utils/withValidate.js'
-
-const { checkSchema } = Validator
+import withValidate from '../utils/withValidate.js'
 
 import argon2 from 'argon2'
 
-import { client, q } from '../DBConnector.js'
-import SetAndGetTokens from './utils/setTokens.js'
-import { sendError } from './utils/sendError.js'
+import { client, q } from '../../DBConnector.js'
+import SetAndGetTokens from '../utils/setTokens.js'
+import { sendError } from '../utils/sendError.js'
+
+const { checkSchema } = Validator
 
 export default app => {
     app.post(

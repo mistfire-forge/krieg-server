@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-import { NetworkErrorCode } from '../../shared/MessageCodes.js'
+import { NetworkErrorCode } from '../../../shared/MessageCodes.js'
 
-import GetAndSetTokens from './utils/setTokens.js'
+import GetAndSetTokens from '../utils/setTokens.js'
 
 export default app => {
     app.get('/refresh', async (req, res) => {
