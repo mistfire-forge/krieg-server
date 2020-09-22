@@ -8,6 +8,8 @@ import MySessionsListRoute from './session/mySessionsList.js'
 import CreateMapRoute from './map/createMap.js'
 import MyMapsListRoute from './map/myMapsList.js'
 
+import GetMapRoute from './map/getMap.js'
+
 export default app => {
     CreateAccountRoute(app)
     LoginRoute(app)
@@ -18,4 +20,6 @@ export default app => {
 
     CreateMapRoute(app)
     MyMapsListRoute(app)
+
+    GetMapRoute(app)
 }

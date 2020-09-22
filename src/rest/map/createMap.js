@@ -20,20 +20,21 @@ export default app => {
         withValidate(async (req, res) => {
             try {
                 const playerRef = q.Ref(q.Collection('users'), req.user.userId)
-                // const createResult = await client.query(
-                //     q.Create(q.Collection('sessions'), {
-                //         data: {
-                //             name: req.body.mapName,
-                //             creator: playerRef,
-                //             maxPlayers: 4,
-                //         },
-                //     })
-                // )
+                const createResult = await client.query(
+                    q.Create(q.Collection('maps'), {
+                        data: {
+                            name: req.body.mapName,
+                            creator: playerRef,
+                            maxPlayers: 4,
+                            lastEdited: q.Now(),
+                        },
+                    })
+                )
                 setTimeout(() => {
                     return res.json({
                         success: true,
                         content: {
-                            mapId: 1,
+                            mapId: createResult.ref.id,
                         },
                     })
                 }, 2000)
