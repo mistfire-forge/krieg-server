@@ -2,6 +2,7 @@ import Validator from 'express-validator'
 import withValidate from '../utils/withValidate.js'
 
 import { client, q } from '../../DBConnector.js'
+import { CreateNewGameMap } from '../../common/gameMap.js'
 
 const { checkSchema } = Validator
 
@@ -27,6 +28,7 @@ export default app => {
                             creator: playerRef,
                             maxPlayers: 4,
                             lastEdited: q.Now(),
+                            gameMap: CreateNewGameMap().createDataRepresentation(),
                         },
                     })
                 )
@@ -39,6 +41,7 @@ export default app => {
                     })
                 }, 2000)
             } catch (err) {
+                console.log(err)
                 return res.json({
                     success: false,
                     error: {

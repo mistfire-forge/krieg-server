@@ -4,7 +4,7 @@ export default app => {
         res.json({
             success: true,
             content: {
-                lists: [],
+                list: [],
             },
         })
     })
