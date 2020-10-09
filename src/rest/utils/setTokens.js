@@ -9,7 +9,7 @@ export default (response, userId) => {
         path: refreshPath,
         httpOnly: true,
         secure: secureCookie,
-        maxAge: 60 * 60 * 24 * 90, // 90 Days
+        maxAge: 1000 * 60 * 60 * 24 * 90, // ms * s * m * h * d = 90 Days
         signed: true,
     })
 
