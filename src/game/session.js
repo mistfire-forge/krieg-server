@@ -1,7 +1,7 @@
 import Connection from './connection.js'
 
 export class Session {
-    constructor(sessionData, user, shutDownGame) {
+    constructor(sessionData, shutDownGame) {
         this.handleUserMessage = this.handleUserMessage.bind(this)
         this.connectionSevered = this.connectionSevered.bind(this)
         this.addConnection = this.addConnection.bind(this)

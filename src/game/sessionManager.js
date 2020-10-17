@@ -9,7 +9,7 @@ export const registerConnection = (socket, userData, sessionData) => {
 
     const sessionId = sessionData.ref.id
     if (!activeSessions[sessionId]) {
-        activeSessions[sessionId] = new Session(sessionData, user, shutDownGame)
+        activeSessions[sessionId] = new Session(sessionData, shutDownGame)
 
         console.log('Activated Game')
     }

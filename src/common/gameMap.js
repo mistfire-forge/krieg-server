@@ -9,7 +9,7 @@ export class GameMap {
 export const CreateNewGameMap = () => {
     const map = new GameMap()
 
-    map.terrain = [...Array(20)].map(x => Array(20).fill(0))
+    map.terrain = [...Array(20)].map(() => Array(10).fill(0))
     map.buildings = []
     map.maxPlayers = 2
     map.startingUnits = [null, null]
